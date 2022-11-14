@@ -26,10 +26,12 @@
           <hr />
           <ul class="nav nav-pills flex-column">
             <li class="py-2">
-              <input class="w-75" />
+              <input type="text" class="w-75" id="input_word" />
             </li>
             <li class="py-2">
-              <button type="button" class="btn btn-primary">Cargar</button>
+              <button type="button" class="btn btn-primary" id="load_btn">
+                Cargar
+              </button>
             </li>
             <li class="py-2">
               <div
@@ -37,28 +39,44 @@
                 role="group"
                 aria-label="Controles"
               >
-                <button type="button" class="btn btn-outline-light">
+                <button
+                  type="button"
+                  class="btn btn-outline-light"
+                  id="start_btn"
+                >
                   Iniciar
                 </button>
-                <button type="button" class="btn btn-outline-light">
+                <button
+                  type="button"
+                  class="btn btn-outline-light"
+                  id="pause_btn"
+                >
                   Pausar
                 </button>
-                <button type="button" class="btn btn-outline-light">
+                <button
+                  type="button"
+                  class="btn btn-outline-light"
+                  id="cancel_btn"
+                >
                   Cancelar
                 </button>
-                <button type="button" class="btn btn-outline-light">
+                <button
+                  type="button"
+                  class="btn btn-outline-light"
+                  id="next_btn"
+                >
                   Siguiente
                 </button>
               </div>
             </li>
             <li>
-              <label for="input_velocidad" class="form-label">Velocidad</label>
+              <label for="speed_input" class="form-label">Velocidad</label>
               <input
                 type="range"
                 class="form-range w-75"
                 min="0"
                 max="4"
-                id="input_velocidad"
+                id="speed_input"
               />
             </li>
           </ul>
@@ -66,7 +84,7 @@
         </nav>
 
         <main class="col-10 bg-success vh-100">
-          <div class="container-fluid"></div>
+          <div class="container-fluid"><div id="graph_container"></div>
         </main>
       </div>
     </div>
