@@ -29,6 +29,7 @@ $(document).ready(function () {
 
 function loadWord() {
   activeWord = $("#input_word").val();
+  playMessage("Palabra cargada.");
 
   $("#word_container").empty();
 
@@ -70,9 +71,12 @@ function startValidation() {
   console.log(result);
 
   if (result.length == 0) {
+    playMessage("No se ha cargado ninguna palabra.");
     alert("No se ha cargado ninguna palabra.");
   } else {
     stopPause = false;
+    playMessage("Validación iniciada.");
+
     $("#load_btn").prop("disabled", true);
     $("#start_btn").prop("disabled", true);
     $("#speed_input").prop("disabled", true);
@@ -115,8 +119,10 @@ function startValidation() {
             if (currentStep == result.length) {
               if (node.data.key == "r") {
                 d.model.set(node.data, "color", "green");
+                playMessage("Palabra aceptada.");
               } else {
                 d.model.set(node.data, "color", "red");
+                playMessage("Palabra rechazada.");
               }
             } else {
               d.model.set(node.data, "color", "lightblue");
@@ -131,6 +137,7 @@ function startValidation() {
         var node = activeDiagram.findNodeForKey(last);
         activeDiagram.commit((d) => {
           d.model.set(node.data, "color", "red");
+          playMessage("Palabra rechazada.");
         });
       }
 
@@ -140,6 +147,7 @@ function startValidation() {
 }
 
 function pauseValidation() {
+  playMessage("Pausando.");
   stopPause = true;
   $("#start_btn").prop("disabled", false);
   $("#pause_btn").prop("disabled", true);
@@ -147,6 +155,7 @@ function pauseValidation() {
 }
 
 function cancelValidation() {
+  playMessage("Cancelando.");
   $("#load_btn").prop("disabled", false);
   $("#start_btn").prop("disabled", false);
   $("#speed_input").prop("disabled", false);
@@ -265,4 +274,15 @@ function updateWord() {
     $("#letter_" + (currentStep - 1)).removeClass("bg-success");
     $("#letter_" + (currentStep - 1)).addClass("bg-info");
   }, speed * 0.5);
+}
+
+function playMessage(text) {
+  var message = new SpeechSynthesisUtterance();
+  message.volume = 1;
+  message.rate = 1;
+  message.pitch = 1;
+  message.text = text;
+  message.lang = "es-ES";
+
+  speechSynthesis.speak(message);
 }
