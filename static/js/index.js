@@ -30,6 +30,26 @@ $(document).ready(function () {
 function loadWord() {
   activeWord = $("#input_word").val();
 
+  $("#word_container").empty();
+
+  $("#word_container").append(
+    '<div class="bg-success m-1 px-4 py-1 border border-1 border-dark" id="letter_0"></div>'
+  );
+  for (let i = 0; i < activeWord.length; i++) {
+    $("#word_container").append(
+      '<div class="bg-info m-1 px-4 py-1 border border-1 border-dark" id="letter_' +
+        (i + 1) +
+        '">' +
+        activeWord.charAt(i) +
+        "</div>"
+    );
+  }
+  $("#word_container").append(
+    '<div class="bg-info m-1 px-4 py-1 border border-1 border-dark" id="letter_' +
+      (activeWord.length + 1) +
+      '"></div>'
+  );
+
   $.ajax({
     data: {
       word: activeWord,
@@ -70,6 +90,9 @@ function startValidation() {
       if (result[currentStep].length != 0) {
         var currentNode = result[currentStep][0][0];
         last = currentNode;
+
+        updateWord();
+        updateStack();
         console.log(result[currentStep]);
 
         var node = activeDiagram.findNodeForKey(currentNode);
@@ -136,6 +159,8 @@ function cancelValidation() {
     currentStep = 0;
     result = [];
 
+    $("#stack_container").empty();
+
     activeDiagram.commit((d) => {
       d.nodes.each((node) => {
         d.model.set(node.data, "color", "lightblue");
@@ -163,7 +188,7 @@ function loadDiagram() {
 
   activeDiagram.linkTemplate = new go.Link()
     .add(
-      new go.Shape({ strokeWidth: 3, stroke: "#555" }).bind("stroke", "color")
+      new go.Shape({ strokeWidth: 5, stroke: "#555" }).bind("stroke", "color")
     )
     .add(new go.Shape({ toArrow: "Standard", stroke: null }))
     .add(
@@ -212,4 +237,28 @@ function updateSpeed() {
   var speed_input = $("#speed_input").val();
 
   speed = 2000 / speed_input - 300;
+}
+
+function updateStack() {
+  var stack = result[currentStep][0][2];
+
+  $("#stack_container").empty();
+
+  stack.forEach((element) => {
+    $("#stack_container").append(
+      '<div class="bg-info border border-1 border-dark my-1 text-center">' +
+        element +
+        "</div>"
+    );
+  });
+}
+
+function updateWord() {
+  $("#letter_" + currentStep).removeClass("bg-info");
+  $("#letter_" + currentStep).addClass("bg-success");
+
+  setTimeout(function () {
+    $("#letter_" + (currentStep - 1)).removeClass("bg-success");
+    $("#letter_" + (currentStep - 1)).addClass("bg-info");
+  }, speed * 0.5);
 }
