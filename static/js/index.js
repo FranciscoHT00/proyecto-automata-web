@@ -11,7 +11,11 @@ activeDiagram.layout = new go.GridLayout();
 activeDiagram.layout.spacing = go.Size.parse("70");
 
 $(document).ready(function () {
+  $("#pause_btn").prop("disabled", true);
+  $("#cancel_btn").prop("disabled", true);
+
   loadDiagram();
+
   $("#load_btn").on("click", loadWord);
 
   $("#start_btn").on("click", startValidation);
@@ -41,11 +45,17 @@ function loadWord() {
 }
 
 function startValidation() {
-  stopPause = false;
   console.log(result);
+
   if (result.length == 0) {
-    alert("Ha ocurrido un error o no se ha cargado ninguna palabra.");
+    alert("No se ha cargado ninguna palabra.");
   } else {
+    stopPause = false;
+    $("#load_btn").prop("disabled", true);
+    $("#start_btn").prop("disabled", true);
+    $("#pause_btn").prop("disabled", false);
+    $("#cancel_btn").prop("disabled", false);
+
     var timeInterval = setInterval(function () {
       var currentNode = result[currentStep][0][0];
       console.log(result[currentStep]);
@@ -94,15 +104,35 @@ function startValidation() {
 
 function pauseValidation() {
   stopPause = true;
+  $("#start_btn").prop("disabled", false);
+  $("#pause_btn").prop("disabled", true);
 }
 
 function cancelValidation() {
+  $("#load_btn").prop("disabled", false);
+  $("#start_btn").prop("disabled", false);
+  $("#pause_btn").prop("disabled", true);
+  $("#cancel_btn").prop("disabled", true);
+
+  stopPause = true;
   setTimeout(function () {
-    stopPause = true;
-    // activeWord = "";
-    // currentStep = 0;
-    // result = [];
-  }, speed);
+    activeWord = "";
+    currentStep = 0;
+    result = [];
+
+    activeDiagram.commit((d) => {
+      d.nodes.each((node) => {
+        d.model.set(node.data, "color", "lightblue");
+        if (node.data.key == "") {
+          d.model.set(node.data, "color", "transparent");
+        }
+      });
+
+      d.links.each((link) => {
+        d.model.set(link.data, "color", "#555");
+      });
+    });
+  }, speed * 1.1);
 }
 
 function loadDiagram() {
