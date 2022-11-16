@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Automata de Pila</title>
+    <title>Pushdown Automata</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -15,15 +15,15 @@
   <body>
     <header>
       <div class="d-flex flex-column align-items-center py-3 text-bg-dark">
-        <h1>Automata de Pila</h1>
-        <h2>Reconocedor de Palíndromos Binarios con Separador</h2>
+        <h1>Pusdown Automata</h1>
+        <h2>Binary Palindrome Recognizer with Separator</h2>
       </div>
     </header>
 
     <div class="container-fluid">
       <div class="row">
         <nav class="col-2 py-3 text-bg-dark">
-          <h4>Panel de Control</h4>
+          <h4>Control Panel</h4>
           <hr />
           <ul class="nav nav-pills flex-column">
             <li class="py-2">
@@ -31,7 +31,7 @@
             </li>
             <li class="py-2">
               <button type="button" class="btn btn-primary" id="load_btn">
-                Cargar
+                Load
               </button>
             </li>
             <li class="py-2">
@@ -45,26 +45,26 @@
                   class="btn btn-outline-light"
                   id="start_btn"
                 >
-                  Iniciar
+                  Start
                 </button>
                 <button
                   type="button"
                   class="btn btn-outline-light"
                   id="pause_btn"
                 >
-                  Pausar
+                  Pause
                 </button>
                 <button
                   type="button"
                   class="btn btn-outline-light"
                   id="cancel_btn"
                 >
-                  Cancelar
+                  Cancel
                 </button>
               </div>
             </li>
             <li>
-              <label for="speed_input" class="form-label">Velocidad</label>
+              <label for="speed_input" class="form-label d-block">Speed</label>
               <input
                 type="range"
                 class="form-range w-75"
@@ -74,7 +74,7 @@
               />
             </li>
           </ul>
-          <a href="index_en.html">English</a>
+          <a href="index.html">Español</a>
           <a href="index_pt.html">Português</a>
           <hr />
         </nav>
@@ -101,11 +101,11 @@
             class="d-flex flex-row justify-content-center overflow-scroll py-0"
             id="word_container"
           >
-            <h2 class="text-center mb-0">NO HAY PALABRA ACTIVA</h2>
+            <h2 class="text-center mb-0">NO ACTIVE WORD</h2>
           </div>
         </div>
         <div class="col-1 text-bg-dark text-center">
-          <h2>PILA</h2>
+          <h2>STACK</h2>
         </div>
       </div>
     </div>
@@ -128,6 +128,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/gojs/release/go.js"></script>
-    <script src="../static/js/index.js"></script>
+    <script src="../static/js/index_en.js"></script>
   </body>
 </html>
