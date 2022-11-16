@@ -16,8 +16,9 @@ def validate():
     try:
         result = []
         for i in automata_pila.read_input_stepwise(word):
-            result.append(list(i))
+            if len(i):
+                result.append(list(i))
     except Exception as e:
-        result = False
+        pass
     finally:
         return jsonify(result)

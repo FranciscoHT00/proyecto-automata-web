@@ -1,6 +1,6 @@
 var activeWord = "";
 var currentStep = 0;
-var result;
+var result = [];
 var stopPause = false;
 var speed = 1000;
 
@@ -15,6 +15,10 @@ $(document).ready(function () {
   $("#load_btn").on("click", loadWord);
 
   $("#start_btn").on("click", startValidation);
+
+  $("#pause_btn").on("click", pauseValidation);
+
+  $("#cancel_btn").on("click", cancelValidation);
 });
 
 function loadWord() {
@@ -37,12 +41,14 @@ function loadWord() {
 }
 
 function startValidation() {
+  stopPause = false;
   console.log(result);
-  if (result == false) {
-    alert("La palabra no es válida");
+  if (result.length == 0) {
+    alert("Ha ocurrido un error o no se ha cargado ninguna palabra.");
   } else {
     var timeInterval = setInterval(function () {
       var currentNode = result[currentStep][0][0];
+      console.log(result[currentStep]);
 
       var node = activeDiagram.findNodeForKey(currentNode);
 
@@ -61,7 +67,15 @@ function startValidation() {
 
       setTimeout(function () {
         activeDiagram.commit((d) => {
-          d.model.set(node.data, "color", "lightblue");
+          if (currentStep == result.length) {
+            if (node.data.key == "r") {
+              d.model.set(node.data, "color", "green");
+            } else {
+              d.model.set(node.data, "color", "red");
+            }
+          } else {
+            d.model.set(node.data, "color", "lightblue");
+          }
 
           d.links.each((link) => {
             d.model.set(link.data, "color", "#555");
@@ -72,9 +86,23 @@ function startValidation() {
       currentStep++;
       if (currentStep == result.length || stopPause == true) {
         clearInterval(timeInterval);
+        return;
       }
     }, speed);
   }
+}
+
+function pauseValidation() {
+  stopPause = true;
+}
+
+function cancelValidation() {
+  setTimeout(function () {
+    stopPause = true;
+    // activeWord = "";
+    // currentStep = 0;
+    // result = [];
+  }, speed);
 }
 
 function loadDiagram() {
