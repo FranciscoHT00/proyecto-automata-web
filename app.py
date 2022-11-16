@@ -15,9 +15,8 @@ def validate():
 
     try:
         result = []
-        for i in automata_pila.read_input_stepwise(word):
-            if len(i):
-                result.append(list(i))
+        for i in automata_pila.read_input_stepwise(word):            
+            result.append(list(i))
     except Exception as e:
         pass
     finally:

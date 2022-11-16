@@ -2,7 +2,7 @@ var activeWord = "";
 var currentStep = 0;
 var result = [];
 var stopPause = false;
-var speed = 1000;
+var speed = 500;
 
 var activeAutomata = "automata_pila";
 const activeDiagram = new go.Diagram("graph_container");
@@ -23,6 +23,8 @@ $(document).ready(function () {
   $("#pause_btn").on("click", pauseValidation);
 
   $("#cancel_btn").on("click", cancelValidation);
+
+  $("#speed_input").on("change", updateSpeed);
 });
 
 function loadWord() {
@@ -53,51 +55,63 @@ function startValidation() {
     stopPause = false;
     $("#load_btn").prop("disabled", true);
     $("#start_btn").prop("disabled", true);
+    $("#speed_input").prop("disabled", true);
     $("#pause_btn").prop("disabled", false);
     $("#cancel_btn").prop("disabled", false);
 
+    var last = "p";
+
     var timeInterval = setInterval(function () {
-      var currentNode = result[currentStep][0][0];
-      console.log(result[currentStep]);
-
-      var node = activeDiagram.findNodeForKey(currentNode);
-
-      activeDiagram.commit((d) => {
-        d.model.set(node.data, "color", "steelblue");
-        if (currentStep != 0) {
-          var lastNode = result[currentStep - 1][0][0];
-
-          d.links.each((link) => {
-            if (link.data.from == lastNode && link.data.to == currentNode) {
-              d.model.set(link.data, "color", "green");
-            }
-          });
-        }
-      });
-
-      setTimeout(function () {
-        activeDiagram.commit((d) => {
-          if (currentStep == result.length) {
-            if (node.data.key == "r") {
-              d.model.set(node.data, "color", "green");
-            } else {
-              d.model.set(node.data, "color", "red");
-            }
-          } else {
-            d.model.set(node.data, "color", "lightblue");
-          }
-
-          d.links.each((link) => {
-            d.model.set(link.data, "color", "#555");
-          });
-        });
-      }, speed * 0.5);
-
-      currentStep++;
       if (currentStep == result.length || stopPause == true) {
         clearInterval(timeInterval);
         return;
       }
+
+      if (result[currentStep].length != 0) {
+        var currentNode = result[currentStep][0][0];
+        last = currentNode;
+        console.log(result[currentStep]);
+
+        var node = activeDiagram.findNodeForKey(currentNode);
+
+        activeDiagram.commit((d) => {
+          d.model.set(node.data, "color", "steelblue");
+          if (currentStep != 0) {
+            var lastNode = result[currentStep - 1][0][0];
+
+            d.links.each((link) => {
+              if (link.data.from == lastNode && link.data.to == currentNode) {
+                d.model.set(link.data, "color", "green");
+              }
+            });
+          }
+        });
+
+        setTimeout(function () {
+          activeDiagram.commit((d) => {
+            if (currentStep == result.length) {
+              if (node.data.key == "r") {
+                d.model.set(node.data, "color", "green");
+              } else {
+                d.model.set(node.data, "color", "red");
+              }
+            } else {
+              d.model.set(node.data, "color", "lightblue");
+            }
+
+            d.links.each((link) => {
+              d.model.set(link.data, "color", "#555");
+            });
+          });
+        }, speed * 0.5);
+      } else {
+        var node = activeDiagram.findNodeForKey(last);
+        activeDiagram.commit((d) => {
+          d.model.set(node.data, "color", "red");
+        });
+      }
+
+      currentStep++;
     }, speed);
   }
 }
@@ -106,11 +120,13 @@ function pauseValidation() {
   stopPause = true;
   $("#start_btn").prop("disabled", false);
   $("#pause_btn").prop("disabled", true);
+  $("#speed_input").prop("disabled", false);
 }
 
 function cancelValidation() {
   $("#load_btn").prop("disabled", false);
   $("#start_btn").prop("disabled", false);
+  $("#speed_input").prop("disabled", false);
   $("#pause_btn").prop("disabled", true);
   $("#cancel_btn").prop("disabled", true);
 
@@ -190,4 +206,10 @@ function loadDiagram() {
       ]
     );
   }
+}
+
+function updateSpeed() {
+  var speed_input = $("#speed_input").val();
+
+  speed = 2000 / speed_input - 300;
 }
