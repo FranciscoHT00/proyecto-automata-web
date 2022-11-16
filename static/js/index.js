@@ -160,6 +160,10 @@ function cancelValidation() {
     result = [];
 
     $("#stack_container").empty();
+    $("#word_container").empty();
+    $("#word_container").append(
+      '<h1 class="text-center">NO HAY PALABRA ACTIVA</h1>'
+    );
 
     activeDiagram.commit((d) => {
       d.nodes.each((node) => {
