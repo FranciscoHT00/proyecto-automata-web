@@ -1,0 +1,13 @@
+{
+  "title": "Autómata de Pila",
+  "h1_title": "Autómata de Pila",
+  "h2_title": "Reconocedor de Palíndromos Binarios con Separador",
+  "control_panel": "Panel de Control",
+  "load_btn": "Cargar",
+  "start_btn": "Iniciar",
+  "pause_btn": "Pausar",
+  "cancel_btn": "Cancelar",
+  "speed": "Velocidad",
+  "h2_no_word": "NO HAY PALABRA ACTIVA",
+  "stack": "PILA"
+}
